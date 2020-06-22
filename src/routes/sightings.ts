@@ -1,5 +1,5 @@
 import express from 'express';
-import { SharkSighting } from '../models/sightings'
+import SharkSighting from '../models/sightings'
 
 const router = express.Router();
 

@@ -1,5 +1,7 @@
-export class SharkSighting {
+export default class SharkSighting {
     id: string
+    // createdBy: string
+    // createdOn: date
     sightingDetails: SightingDetails
     sharkDetails: SharkDetails
 }
