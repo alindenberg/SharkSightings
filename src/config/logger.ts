@@ -5,5 +5,5 @@ export function info(msg: string): void {
 }
 
 export function error(msg: string): void {
-    console.error(chalk.red(msg));
+    console.log(chalk.red(msg));
 }

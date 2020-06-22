@@ -1,34 +1,27 @@
 import express from 'express';
-import SharkSighting from '../models/sightings'
+
+import * as logger from '../config/logger'
+import SightingService from '../services/sightings'
 
 const router = express.Router();
+const service = new SightingService();
 
-let sighting: SharkSighting = {
-    id: "1234",
-    sightingDetails: null,
-    sharkDetails: {
-        type: "Great White",
-        size: 10,
-        showedAggression: true
-    },
-};
-let pagedSightingList: SharkSighting[] = [sighting];
-
-router.get('/sightings', (req, res, next) => {
-    res.status(200).send(pagedSightingList)
+router.get('/sightings', async (_, res, next) => {
+    await service.getAllSightings().then(sightings => {
+        res.status(200).send(sightings)
+    }).catch(err => {
+        res.status(400).send(err)
+    });
 })
 
-router.get('/sightings/:id', (req, res, next) => {
-    // todo - everything
-    res.status(200).send(sighting)
-})
+router.get('/sightings/:id', (req, res, next) => {})
+// router.get('/sightings?city=:city', (req, res, next) => {})
 
-router.get('/sightings?city=:city', (req, res, next) => {
-
-})
-
-router.post('/sightings', (req, res, next) => {
-    
+router.post('/sightings', async (req, res, next) => {
+    await service.createSighting(req.body).then(() => res.sendStatus(200)).catch(err => {
+        logger.error(err)
+        res.status(400).send(err)
+    });
 })
 
 router.put('/sightings:id', (req, res, next) => {

@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
 import * as logger from '../config/logger'
 
-let db: mongoose.Connection = null;
+let db: typeof mongoose = null;
 
-export function initDb() {
-    db = mongoose.createConnection(process.env.MONGO_URI ? process.env.MONGO_URI : 'localhost:27017', {
+export async function initDb() {
+    db = await mongoose.connect(process.env.MONGO_URI ? process.env.MONGO_URI : 'mongodb://localhost:27017/sharkSightings', {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });

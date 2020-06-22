@@ -6,6 +6,7 @@ import expressWinston from 'express-winston'
 import * as logger from './config/logger'
 import { initDb } from './config/database'
 import sightingsRouter from "./routes/sightings"
+import bodyParser from "body-parser"
 
 dotenv.config();
 initDb();
@@ -13,6 +14,7 @@ initDb();
 const app = express();
 const port = process.env.SERVER_PORT; // default port to listen
 
+app.use(express.json())
 app.use(expressWinston.logger({
     transports: [
       new winston.transports.Console()
