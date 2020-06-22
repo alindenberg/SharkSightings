@@ -1,23 +1,20 @@
 import mongoose from 'mongoose'
-import { v4 as uuid } from 'uuid'
 
 const Schema = mongoose.Schema;
 
 const SharkDetailsSchema = new Schema({
-    type: String,
-    size: Number,
+    type: { type: String, required: true },
+    size: { type: Number, required: true },
     showedAggression: { type: Boolean, required: true }
-    // confidence: number
-    // pictureLinks: string[]
 })
 
 const SharkSightingDetailsSchema = new Schema({
-    city: String,
-    date: String,
-    time: String,
-    crowdSize: Number,
-    distanceFromShore: Number,
-    additionalDetails: String
+    city: { type: String, required: true },
+    date: { type: String, required: true },
+    time: { type: String, required: true },
+    crowdSize: { type: Number, required: false },
+    distanceFromShore: { type: Number, required: true },
+    additionalDetails: { type: String, required: false }
 })
 
 const SharkSightingSchema = new Schema({
