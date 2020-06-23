@@ -27,8 +27,11 @@ router.post('/sightings', async (req, res, next) => {
     });
 })
 
-router.put('/sightings:id', (req, res, next) => {
-    // replace entire sighting object
+router.put('/sightings/:id', async (req, res, next) => {
+    await service.updateSighting(req.params.id, req.body).then(() => res.sendStatus(200)).catch(err => {
+        logger.error(err)
+        res.status(400).send(err)
+    })
 })
 
 export default router;

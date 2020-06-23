@@ -12,6 +12,11 @@ export default class SightingService {
     }
     async createSighting(requestBody: Body) {
         await (new SharkSightingModel(requestBody)).save();
-        logger.info("Saved shark sighting");
+    }
+    async updateSighting(id: string, requestBody: Body) {
+        let updatedSighting = new SharkSightingModel(requestBody);
+        updatedSighting._id = id;
+        updatedSighting.isNew = false;
+        await updatedSighting.save();
     }
 }
