@@ -1,7 +1,5 @@
-import Body from 'express'
-
 import SharkSightingModel from '../models/sightings'
-import * as logger from '../config/logger'
+import * as logger from '../config/logger';
 
 export default class SightingService {
     async getAllSightings(page?: number, pageSize?: number) {
@@ -11,12 +9,23 @@ export default class SightingService {
         return SharkSightingModel.findById(id).exec();
     }
     async createSighting(requestBody: Body) {
-        await (new SharkSightingModel(requestBody)).save();
+        return await (new SharkSightingModel(requestBody)).save()
+        .catch(err => {
+            logger.error(`Error occured while creating sighting: ${err.message}`)
+            throw err;
+        })
     }
-    async updateSighting(id: string, requestBody: Body) {
-        let updatedSighting = new SharkSightingModel(requestBody);
-        updatedSighting._id = id;
-        updatedSighting.isNew = false;
-        await updatedSighting.save();
+    async updateSighting(id: string, sighting: any) {
+        await SharkSightingModel.findById(id).then(async doc => {
+            doc = new SharkSightingModel(sighting)
+            doc._id = id;
+            doc.isNew = false
+            await doc.save();
+        })
+        .then(() => logger.info(`Successfully updated sighting ${id}.`))
+        .catch((err) => {
+            logger.error(`Error occurred while updating sighting ${id}. ${err.message}`)
+            throw err
+        })
     }
 }
