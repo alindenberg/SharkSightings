@@ -1,6 +1,5 @@
 import express from 'express';
-
-import * as logger from '../config/logger'
+import jwtCheck from '../config/auth'
 import SightingService from '../services/sightings'
 
 const router = express.Router();
@@ -27,6 +26,10 @@ router.put('/sightings/:id', async (req, res, next) => {
     await service.updateSighting(req.params.id, req.body)
     .then(() => res.sendStatus(200))
     .catch(err => res.status(400).send(err))
+})
+
+router.get("/api/external", jwtCheck, (_, res) => {
+    res.send({msg: "Access token validated."})
 })
 
 export default router;
