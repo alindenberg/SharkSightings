@@ -5,6 +5,7 @@ import express from "express"
 import winstonLogger, * as logger from './config/logger'
 import { initDb } from './config/database'
 import sightingsRouter from "./routes/sightings"
+import sharkTypeRouter from "./routes/sharkTypes"
 
 dotenv.config();
 initDb();
@@ -15,7 +16,10 @@ const port = process.env.SERVER_PORT; // default port to listen
 app.use(cors())
 app.use(express.json())
 app.use(winstonLogger);
+
 app.use(sightingsRouter)
+app.use(sharkTypeRouter)
+
 app.listen( port, () => {
     logger.info(`server started at http://localhost:${ port }`);
 } );

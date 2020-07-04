@@ -12,7 +12,6 @@ const SharkSightingDetailsSchema = new Schema({
     city: { type: String, required: true },
     date: { type: String, required: true },
     time: { type: String, required: true },
-    crowdSize: { type: Number, required: false },
     distanceFromShore: { type: Number, required: true },
     additionalDetails: { type: String, required: false }
 })
