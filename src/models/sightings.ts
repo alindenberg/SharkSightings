@@ -13,12 +13,13 @@ const SharkSightingDetailsSchema = new Schema({
     date: { type: String, required: true },
     time: { type: String, required: true },
     distanceFromShore: { type: Number, required: true },
-    additionalDetails: { type: String, required: false }
+    additionalNotes: { type: String, required: false }
 })
 
 const SharkSightingSchema = new Schema({
     sightingDetails: { type: SharkSightingDetailsSchema, required: true },
-    sharkDetails: { type: SharkDetailsSchema, required: true }
+    sharkDetails: { type: SharkDetailsSchema, required: true },
+    author: { type: String, required: true }
 })
 
 export default mongoose.model('SharkSighting', SharkSightingSchema)

@@ -16,7 +16,8 @@ export default class SightingService {
     async getSighting(id: string) {
         return SharkSightingModel.findById(id).exec();
     }
-    async createSighting(requestBody: Body) {
+    async createSighting(requestBody: any, userId: String) {
+        requestBody.author = userId
         return await (new SharkSightingModel(requestBody)).save()
             .catch(err => {
                 logger.error(`Error occured while creating sighting: ${err.message}`)

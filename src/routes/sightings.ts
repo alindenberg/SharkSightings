@@ -1,4 +1,4 @@
-import express, { Request } from 'express';
+import express from 'express';
 import jwtCheck from '../config/auth'
 import SightingService from '../services/sightings'
 
@@ -19,10 +19,13 @@ router.get('/sightings/:id', async (req, res, next) => {
         .then(sighting => res.status(200).send(sighting))
 })
 
-router.post('/sightings', async (req, res, next) => {
-    await service.createSighting(req.body)
+router.post('/sightings', jwtCheck, async (req: any, res, next) => {
+    await service.createSighting(req.body, req.user.sub)
         .then((sighting) => res.status(200).send(sighting))
-        .catch(err => res.status(400).send(err));
+        .catch(err => {
+            console.log("Error ", err)
+            res.status(400).send(err)
+        });
 })
 
 router.put('/sightings/:id', async (req, res, next) => {
@@ -31,7 +34,12 @@ router.put('/sightings/:id', async (req, res, next) => {
         .catch(err => res.status(400).send(err))
 })
 
-router.get("/api/external", jwtCheck, (_, res) => {
+// routers.delete('/sightings/:id', async (req, res, next) => {
+
+// })
+
+router.get("/api/external", jwtCheck, (req: any, res) => {
+    console.log("Request auth", req.user)
     res.send({ msg: "Access token validated." })
 })
 
