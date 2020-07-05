@@ -2,18 +2,26 @@ import SharkSightingModel from '../models/sightings'
 import * as logger from '../config/logger';
 
 export default class SightingService {
-    async getAllSightings(page?: number, pageSize?: number) {
-        return SharkSightingModel.find().exec();
+    async getAllSightings(req: any) {
+        let filter: any = {
+        }
+        if (req.query.cities != null) {
+            filter["sightingDetails.city"] = { $in: req.query.cities.split(";") }
+        }
+        if (req.query.sharkTypes != null) {
+            filter["sharkDetails.type"] = { $in: req.query.sharkTypes.split(";") }
+        }
+        return SharkSightingModel.find(filter).exec();
     }
     async getSighting(id: string) {
         return SharkSightingModel.findById(id).exec();
     }
     async createSighting(requestBody: Body) {
         return await (new SharkSightingModel(requestBody)).save()
-        .catch(err => {
-            logger.error(`Error occured while creating sighting: ${err.message}`)
-            throw err;
-        })
+            .catch(err => {
+                logger.error(`Error occured while creating sighting: ${err.message}`)
+                throw err;
+            })
     }
     async updateSighting(id: string, sighting: any) {
         await SharkSightingModel.findById(id).then(async doc => {
@@ -22,10 +30,10 @@ export default class SightingService {
             doc.isNew = false
             await doc.save();
         })
-        .then(() => logger.info(`Successfully updated sighting ${id}.`))
-        .catch((err) => {
-            logger.error(`Error occurred while updating sighting ${id}. ${err.message}`)
-            throw err
-        })
+            .then(() => logger.info(`Successfully updated sighting ${id}.`))
+            .catch((err) => {
+                logger.error(`Error occurred while updating sighting ${id}. ${err.message}`)
+                throw err
+            })
     }
 }
