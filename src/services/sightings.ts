@@ -37,4 +37,16 @@ export default class SightingService {
                 throw err
             })
     }
+    async deleteSighting(id: string, userId: string) {
+        return await SharkSightingModel.findById(id).then((doc: any) => {
+            if (doc.author != userId) {
+                throw new Error("Not allowed to delete a sighting you are not the author of.")
+            } else {
+                doc.remove();
+            }
+        }).catch(err => {
+            logger.error(`Error occurred while deleting sighting ${id}. ${err.message}`)
+            throw err;
+        })
+    }
 }
