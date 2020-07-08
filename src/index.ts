@@ -4,7 +4,6 @@ import express from "express"
 
 import winstonLogger, * as logger from './config/logger'
 import { initDb } from './config/database'
-import jwtCheck from './config/auth'
 import sightingsRouter from "./routes/sightings"
 
 dotenv.config();
@@ -17,7 +16,6 @@ app.use(cors())
 app.use(express.json())
 app.use(winstonLogger);
 
-app.use(jwtCheck)
 app.use(sightingsRouter)
 
 app.listen(port, () => {
